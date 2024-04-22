@@ -31,9 +31,7 @@ class HomeController extends Controller
     {
         if (Auth::id()) {
             $rol = Auth()->user()->rol;
-            $users = (new User)->paginate();
-            return $rol == 'ROLE_ADMIN' ? view('user.index', compact('users'))
-                ->with('i', (request()->input('page', 1) - 1) * $users->perPage()) : view('home', [$users]);
+            return $rol == 'ROLE_ADMIN' ? view('admin.admin') : view('home');
         }
         return redirect()->back();
     }
