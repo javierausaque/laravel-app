@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Http\Requests\CompanyRequest;
+use http\Env\Response;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
+use OpenApi\Annotations as OA;
 use Throwable;
 
 /**
@@ -24,14 +28,31 @@ class CompanyController extends Controller
 
 
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *  path="/company",
+     *  operationId="indexCompany",
+     *  tags={"company"},
+     *  summary="Get list of Company",
+     *  description="Returns list of Company",
+     *  @OA\Response(response=200, description="Successful operation",
+     *
+     *  ),
+     * )
      */
+    public function getCompanies(): \Illuminate\Contracts\Foundation\Application|ResponseFactory|Application|\Illuminate\Http\Response
+    {
+        return response (Company::all(),200);
+
+    }
+
+
+
     public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $companies = (new Company)->paginate();
 
-        return view('company.index', compact('companies'))
-            ->with('i', (request()->input('page', 1) - 1) * $companies->perPage());
+        return response(  view('company.index', compact('companies'))
+            ->with('i', (request()->input('page', 1) - 1) * $companies->perPage()),200);
     }
 
     /**
@@ -45,6 +66,7 @@ class CompanyController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
      */
     public function store(CompanyRequest $companyRequest): RedirectResponse
     {

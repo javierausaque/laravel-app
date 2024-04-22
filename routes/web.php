@@ -29,6 +29,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
 
 Route::controller(CompanyController::class)->group(function (){
     Route::get('/companies', 'index')->name('companies.index')->middleware('auth');
+    Route::get('/company', 'getCompanies')->name('getCompanies')->middleware('auth');
     Route::get('/companies.create', 'create')->name('companies.create')->middleware('auth');
     Route::get('/companies/{company}/edit', 'edit')->name('companies.edit')->middleware('auth');
     Route::get('/companies/{company}/show', 'show')->name('companies.show')->middleware('auth');
