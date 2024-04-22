@@ -51,8 +51,8 @@ class CompanyController extends Controller
     {
         $companies = (new Company)->paginate();
 
-        return response(  view('company.index', compact('companies'))
-            ->with('i', (request()->input('page', 1) - 1) * $companies->perPage()),200);
+        return   view('company.index', compact('companies'))
+            ->with('i', (request()->input('page', 1) - 1) * $companies->perPage());
     }
 
     /**
